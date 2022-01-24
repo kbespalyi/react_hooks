@@ -1,0 +1,39 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true,
+    "jest/globals": true
+  },
+  "extends": ["prettier", "plugin:react/recommended", "plugin:jest/recommended"],
+  "plugins": ["prettier", "@typescript-eslint", "react", "jest"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 13,
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": "warn",
+    "react/jsx-no-bind": [
+      "error",
+      {
+        "allowArrowFunctions": true,
+        "allowBind": false,
+        "ignoreRefs": true
+      }
+    ],
+    "react/no-did-update-set-state": "error",
+    "react/no-unknown-property": "error",
+    "react/no-unused-prop-types": "error",
+    "react/prop-types": "error",
+    "react/react-in-jsx-scope": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
