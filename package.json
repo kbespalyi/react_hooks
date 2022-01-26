@@ -13,15 +13,31 @@
   },
   "homepage": "https://github.com/kbespalyi/react_hooks#readme",
   "description": "",
+  "source": "src/index.ts",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "lint": "eslint ./src/**/*.tsx --max-warnings 0 --cache",
     "lint:fix": "npm run lint -- --fix",
     "tsc": "tsc",
     "test": "jest",
-    "test:watch": "npm test -- --watchAll"
+    "test:watch": "npm test -- --watchAll",
+    "build:types": "tsc",
+    "build:cjs": "IS_CJS=true babel ./src --extensions \".js\",\".jsx\",\".ts\",\".tsx\" --source-maps --out-dir ./dist/cjs",
+    "build:esm": "babel ./src --extensions \".js\",\".jsx\",\".ts\",\".tsx\" --source-maps --out-dir ./dist/esm",
+    "clean": "rimraf ./dist/types ./dist/cjs ./dist/esm",
+    "build": "npm run clean && npm run build:types && npm run build:esm && npm run build:cjs",
+    "preversion": "npm run clean && npm run build && npm run test",
+    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "postversion": "git push && git push --tags"
   },
   "devDependencies": {
+    "@babel/cli": "7.16.8",
+    "@babel/core": "7.16.12",
     "@babel/eslint-parser": "7.16.5",
+    "@babel/preset-react": "7.16.7",
+    "@babel/runtime": "7.16.7",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
@@ -29,6 +45,8 @@
     "@types/react": "17.0.38",
     "@typescript-eslint/eslint-plugin": "5.9.1",
     "@typescript-eslint/parser": "5.9.1",
+    "auto-changelog": "2.3.0",
+    "babel-preset-react-app": "10.0.1",
     "eslint": "8.6.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-config-react-app": "7.0.0",
@@ -51,5 +69,9 @@
   },
   "peerDependencies": {
     "react": ">=17.0.0"
+  },
+  "auto-changelog": {
+    "commitLimit": false,
+    "template": "keepachangelog"
   }
 }
