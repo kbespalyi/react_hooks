@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent, getByTestId } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useStateful } from '../useStateful';
 import { useBooleanState } from '../useBooleanState';
@@ -8,10 +8,38 @@ import { useMapState } from '../useMapState';
 import App from '../App';
 
 describe(`App`, () => {
-  it(`show hello world`, () => {
+  it(`show LightBulb`, () => {
     const { container } = render(<App />);
 
-    expect(container).toHaveTextContent('Hello world');
+    expect(container).toHaveTextContent('Light Bulb');
+  });
+
+  it(`bulb is on`, () => {
+    window.localStorage.setItem('lightSet', '0');
+
+    // get the containing DOM node of your rendered React Element
+    const { container, rerender } = render(<App />);
+    // the p tag in the LightBulb component that contains the current state value
+    const lightState = getByTestId(container, 'lightState');
+    // this references the on button
+    const onButton = getByTestId(container, 'onButton');
+    // this references the off button
+    const offButton = getByTestId(container, 'offButton');
+
+    //simulate clicking on the on button
+    fireEvent.click(onButton);
+    // the test expects the state to be 1.
+    expect(lightState.textContent).toBe('1');
+
+    // this imulates reloading the app
+    rerender(<App />);
+    // the test still expects the cart item count to be 1
+    expect(window.localStorage.getItem('lightSet')).toBe('1');
+
+    //simulate clicking on the off button
+    fireEvent.click(offButton);
+    // the test expects the state to be 1.
+    expect(lightState.textContent).toBe('0');
   });
 });
 
